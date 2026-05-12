@@ -707,37 +707,19 @@ async function sendAI() {
   msgs.appendChild(typing);
   msgs.scrollTop = msgs.scrollHeight;
 
-  const k = APP_DATA.kpis;
-  const slaStr = APP_DATA.teams.map(t => `${t.name}: ${t.sla}%`).join(', ');
-  const systemPrompt = `You are an intelligent AI assistant embedded in the ServiceDesk HQ leadership dashboard for Project ATLAS. 
-Current project stats: ${k.totalTickets} total tickets, ${k.resolved} resolved (${k.resolutionRate}% rate), ${k.slaMet}% overall SLA, ${k.activeBreaches} active SLA breaches, CSAT ${k.csatScore}/5, ${k.activeEngineers} engineers across 7 teams.
-Team SLAs: ${slaStr}.
-Open tickets by team: ${APP_DATA.teams.map(t=>`${t.name}: ${t.open}`).join(', ')}.
-Notable: Infra & Servers team has the lowest SLA at 78%, Hardware team has the most open tickets (32).
-Respond concisely with actionable insights in 2-4 sentences. Be direct and data-driven. If asked for recommendations, prioritize by business impact.`;
-
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: q }]
-      })
-    });
-    const data = await res.json();
+    const result = await api.aiChat(q, State.aiHistory || []);
     document.getElementById('typing')?.remove();
-    const reply = data.content?.find(b => b.type === 'text')?.text || 'Could not process. Please try again.';
-    msgs.innerHTML += `<div class="msg ai">${escapeHTML(reply)}</div>`;
+    msgs.innerHTML += `<div class="msg ai">${escapeHTML(result.reply)}</div>`;
+    State.aiHistory = State.aiHistory || [];
+    State.aiHistory.push({ role: 'user', content: q });
+    State.aiHistory.push({ role: 'assistant', content: result.reply });
   } catch (e) {
     document.getElementById('typing')?.remove();
-    msgs.innerHTML += `<div class="msg ai">Unable to reach AI service. Check your internet connection and try again.</div>`;
+    msgs.innerHTML += `<div class="msg ai">Error: ${e.message}</div>`;
   }
   msgs.scrollTop = msgs.scrollHeight;
 }
-
 // ══════════════════════════════════════════════════════════
 //  HELPERS
 // ══════════════════════════════════════════════════════════

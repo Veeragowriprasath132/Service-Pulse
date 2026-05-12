@@ -18,6 +18,7 @@ class Settings(BaseSettings):
 
     # Anthropic
     anthropic_api_key: str = ""
+    groq_api_key: str = ""
 
     # CORS
     cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000,http://localhost:5500"

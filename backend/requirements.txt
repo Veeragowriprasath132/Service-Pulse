@@ -18,12 +18,12 @@ email-validator==2.2.0
 # ── AI / ML ───────────────────────────────────────────────
 anthropic==0.40.0                # Claude API
 scikit-learn==1.5.2              # ML: routing + SLA prediction
-numpy==1.26.4                    # Numerical operations
+numpy==1.24.0                    # Numerical operations
 pandas==2.2.3                    # Data manipulation
 
 # ── RAG / Vector search ───────────────────────────────────
 sentence-transformers==3.3.1     # Text embeddings
-faiss-cpu==1.9.0                 # Vector similarity search
+faiss-cpu==1.13.0                 # Vector similarity search
 tiktoken==0.8.0                  # Token counting
 
 # ── Utilities ─────────────────────────────────────────────
