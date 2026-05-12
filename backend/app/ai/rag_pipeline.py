@@ -15,7 +15,7 @@ import numpy as np
 from typing import List, Tuple, Optional
 from functools import lru_cache
 
-import anthropic
+from groq import Groq
 from app.config import get_settings
 
 logger = logging.getLogger(__name__)
@@ -269,14 +269,13 @@ Answer using the context and live stats above. If something is unknown, say so c
 
     # Step 4: Call Claude
     try:
-        client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+        client = Groq(api_key=settings.groq_api_key)
+        response = client.chat.completions.create(
+            model="llama3-70b-8192",
             max_tokens=1024,
-            system=system_prompt,
-            messages=messages
+            messages=[{"role": "system", "content": system_prompt}] + messages
         )
-        reply = response.content[0].text
+        reply = response.choices[0].message.content
     except Exception as e:
         logger.error("Claude API error: %s", e)
         reply = f"AI service temporarily unavailable. Error: {str(e)[:100]}"
