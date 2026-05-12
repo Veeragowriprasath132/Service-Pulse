@@ -78,7 +78,7 @@ app.include_router(ai_router)
 import os
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "frontend")
 if os.path.exists(FRONTEND_DIR):
-    app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
+    app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
     @app.get("/", include_in_schema=False)
     def serve_frontend():
