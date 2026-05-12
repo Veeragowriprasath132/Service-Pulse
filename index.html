@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServiceDesk HQ — Project ATLAS</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon"><i class="ti ti-layout-dashboard" style="font-size:16px"></i></div>
+        <div>
+          <div class="logo-text">ServiceDesk HQ</div>
+          <div class="logo-sub">Leadership Dashboard</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-section">Overview</div>
+    <button class="nav-item active" data-page="dashboard" onclick="nav('dashboard',this)">
+      <i class="ti ti-home-2 icon"></i><span>Dashboard</span>
+    </button>
+    <button class="nav-item" data-page="sla" onclick="nav('sla',this)">
+      <i class="ti ti-clock-check icon"></i><span>SLA Monitor</span>
+      <span class="nav-badge">14</span>
+    </button>
+    <button class="nav-item" data-page="workload" onclick="nav('workload',this)">
+      <i class="ti ti-chart-bar icon"></i><span>Workload</span>
+    </button>
+
+    <div class="nav-section">Management</div>
+    <button class="nav-item" data-page="teams" onclick="nav('teams',this)">
+      <i class="ti ti-users-group icon"></i><span>Teams &amp; Members</span>
+    </button>
+    <button class="nav-item" data-page="tickets" onclick="nav('tickets',this)">
+      <i class="ti ti-ticket icon"></i><span>All Tickets</span>
+    </button>
+    <button class="nav-item" data-page="create" onclick="nav('create',this)">
+      <i class="ti ti-circle-plus icon"></i><span>Create Ticket</span>
+    </button>
+
+    <div class="sidebar-footer">
+      <button class="nav-item" onclick="toggleAI()">
+        <i class="ti ti-robot icon"></i><span>AI Assistant</span>
+      </button>
+      <button class="nav-item" id="themeBtn" onclick="toggleTheme()">
+        <i class="ti ti-moon icon"></i><span>Dark Mode</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN ════ -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-title-area">
+        <div class="topbar-title" id="pageTitle">Executive Dashboard</div>
+        <div class="topbar-breadcrumb" id="pageSub">Real-time overview · Project ATLAS</div>
+      </div>
+      <div class="topbar-actions">
+        <input class="filter-input" id="globalSearch" placeholder="🔍 Quick search tickets…" style="width:200px" />
+        <div class="date-chip"><i class="ti ti-calendar" style="font-size:12px;vertical-align:-1px;margin-right:4px"></i>Mon, 11 May 2026</div>
+        <button class="topbar-btn primary" onclick="toggleAI()">
+          <i class="ti ti-sparkles"></i>Ask AI
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- ══════ DASHBOARD PAGE ══════ -->
+      <div class="page active" id="page-dashboard">
+
+        <!-- Filter bar -->
+        <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
+          <span style="font-size:12px;color:var(--text-muted)">Export:</span>
+          <button class="export-btn csv" onclick="exportCSV('tickets')"><i class="ti ti-table-export"></i>CSV</button>
+          <button class="export-btn pdf" onclick="exportPDF('dashboard')"><i class="ti ti-file-type-pdf"></i>PDF Report</button>
+        </div>
+
+        <!-- KPIs row 1 -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-ticket" style="color:var(--accent)"></i>Total Tickets</div>
+            <div class="metric-value" id="kpi-total">1,248</div>
+            <div class="metric-delta delta-up"><i class="ti ti-trending-up" style="font-size:12px"></i>+12% this week</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-circle-check" style="color:var(--success)"></i>Resolved</div>
+            <div class="metric-value" id="kpi-resolved">1,089</div>
+            <div class="metric-delta delta-up"><i class="ti ti-trending-up" style="font-size:12px"></i>87.2% rate</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-clock-check" style="color:var(--warning)"></i>SLA Met</div>
+            <div class="metric-value" id="kpi-sla">92.4%</div>
+            <div class="metric-delta delta-up"><i class="ti ti-trending-up" style="font-size:12px"></i>+2.1% vs last month</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-alert-triangle" style="color:var(--danger)"></i>Breaches</div>
+            <div class="metric-value" style="color:var(--danger)" id="kpi-breaches">14</div>
+            <div class="metric-delta delta-down"><i class="ti ti-trending-down" style="font-size:12px"></i>-8 vs last week</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-star" style="color:var(--warning)"></i>CSAT Score</div>
+            <div class="metric-value" id="kpi-csat">4.3/5</div>
+            <div class="metric-delta delta-up"><i class="ti ti-trending-up" style="font-size:12px"></i>+0.2 vs last month</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-clock" style="color:var(--accent)"></i>Avg Resolution</div>
+            <div class="metric-value" id="kpi-avgres">4.2h</div>
+            <div class="metric-delta delta-up"><i class="ti ti-trending-down" style="font-size:12px"></i>-0.8h improved</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-stack" style="color:var(--warning)"></i>Open Now</div>
+            <div class="metric-value" id="kpi-open">159</div>
+            <div class="metric-delta delta-up"><i class="ti ti-trending-down" style="font-size:12px"></i>-23 from yesterday</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-users" style="color:var(--success)"></i>Engineers</div>
+            <div class="metric-value" id="kpi-eng">38</div>
+            <div class="metric-delta delta-neu">7 teams active</div>
+          </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="charts-row">
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Ticket volume — last 7 days</div><div class="card-sub">New vs resolved per day</div></div>
+              <div style="display:flex;gap:10px;font-size:11px;color:var(--text-muted)">
+                <span style="display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:2px;background:#378ADD;display:inline-block"></span>New</span>
+                <span style="display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:2px;background:#1D9E75;display:inline-block"></span>Resolved</span>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height:210px">
+              <canvas id="volumeChart" role="img" aria-label="Bar chart of daily ticket volumes over 7 days">Daily new and resolved tickets for the past 7 days.</canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">By category</div><div class="card-sub">This month</div></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+              <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted)"><span style="width:9px;height:9px;border-radius:2px;background:#185FA5;display:inline-block"></span>Network</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted)"><span style="width:9px;height:9px;border-radius:2px;background:#0F6E56;display:inline-block"></span>Software</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted)"><span style="width:9px;height:9px;border-radius:2px;background:#BA7517;display:inline-block"></span>Hardware</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted)"><span style="width:9px;height:9px;border-radius:2px;background:#A32D2D;display:inline-block"></span>Security</span>
+            </div>
+            <div class="chart-wrap" style="height:180px">
+              <canvas id="categoryChart" role="img" aria-label="Doughnut chart showing ticket distribution by category">Ticket distribution by category.</canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent tickets -->
+        <div class="card full-row">
+          <div class="card-header">
+            <div class="card-title">Recent activity</div>
+            <span class="card-action" onclick="nav('tickets', document.querySelector('[data-page=tickets]'))">View all tickets →</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ticket ID</th><th>Subject</th><th>Team</th><th>Assignee</th>
+                  <th>Priority</th><th>Status</th><th>Updated</th>
+                </tr>
+              </thead>
+              <tbody id="recentTicketsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ SLA PAGE ══════ -->
+      <div class="page" id="page-sla">
+        <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
+          <span style="font-size:12px;color:var(--text-muted)">Export:</span>
+          <button class="export-btn csv" onclick="exportCSV('sla')"><i class="ti ti-table-export"></i>CSV</button>
+          <button class="export-btn pdf" onclick="exportPDF('sla')"><i class="ti ti-file-type-pdf"></i>PDF Report</button>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-clock-check" style="color:var(--success)"></i>Overall SLA</div>
+            <div class="metric-value" style="color:var(--success)">92.4%</div>
+            <div class="metric-delta delta-neu">Target: 95%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-clock" style="color:var(--accent)"></i>Avg Resolution</div>
+            <div class="metric-value">4.2h</div>
+            <div class="metric-delta delta-up">-0.8h improved</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-alert-circle" style="color:var(--danger)"></i>Active Breaches</div>
+            <div class="metric-value" style="color:var(--danger)">14</div>
+            <div class="metric-delta delta-down">Needs attention</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-star" style="color:var(--warning)"></i>CSAT Score</div>
+            <div class="metric-value">4.3<span style="font-size:15px;color:var(--text-muted)">/5</span></div>
+            <div class="metric-delta delta-up">+0.2 vs last month</div>
+          </div>
+        </div>
+
+        <div class="charts-row">
+          <div class="card">
+            <div class="card-header"><div class="card-title">SLA by team</div><div class="card-sub">Current month · Target 95%</div></div>
+            <div id="slaTeamBars"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">SLA trend — 6 months</div></div>
+            <div style="display:flex;gap:12px;margin-bottom:10px;font-size:11px;color:var(--text-muted)">
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:2px;background:#185FA5;display:inline-block"></span>Actual</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:2px;background:#A32D2D;display:inline-block"></span>Target 95%</span>
+            </div>
+            <div class="chart-wrap" style="height:220px">
+              <canvas id="slaTrendChart" role="img" aria-label="Line chart of SLA trend over 6 months">SLA percentage trend over 6 months vs 95% target.</canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card full-row">
+          <div class="card-header">
+            <div class="card-title">SLA breached tickets</div>
+            <span class="badge badge-breach">14 active</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Ticket</th><th>Subject</th><th>Team</th><th>Priority</th><th>Overdue by</th><th>Assignee</th></tr></thead>
+              <tbody id="slaBreachBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ WORKLOAD PAGE ══════ -->
+      <div class="page" id="page-workload">
+        <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
+          <span style="font-size:12px;color:var(--text-muted)">Export:</span>
+          <button class="export-btn csv" onclick="exportCSV('workload')"><i class="ti ti-table-export"></i>CSV</button>
+          <button class="export-btn pdf" onclick="exportPDF('workload')"><i class="ti ti-file-type-pdf"></i>PDF Report</button>
+        </div>
+
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr)">
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-users" style="color:var(--accent)"></i>Engineers</div>
+            <div class="metric-value">38</div>
+            <div class="metric-delta delta-neu">7 teams</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-stack" style="color:var(--warning)"></i>Open Tickets</div>
+            <div class="metric-value">159</div>
+            <div class="metric-delta delta-up">-23 from yesterday</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-user-check" style="color:var(--success)"></i>Avg per Person</div>
+            <div class="metric-value">4.2</div>
+            <div class="metric-delta delta-neu">Tickets assigned</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label"><i class="ti ti-user-x" style="color:var(--danger)"></i>Overloaded</div>
+            <div class="metric-value" style="color:var(--danger)">5</div>
+            <div class="metric-delta delta-down">10+ tickets each</div>
+          </div>
+        </div>
+
+        <div class="charts-row">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Open tickets by team</div><div class="card-sub">Distribution today</div></div>
+            <div class="chart-wrap" style="height:260px">
+              <canvas id="workloadChart" role="img" aria-label="Horizontal bar chart of open tickets per team">Open ticket count per team.</canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Engineer workload</div>
+              <div style="display:flex;gap:10px;font-size:11px;color:var(--text-muted)">
+                <span><span class="wl-badge wl-normal" style="display:inline-block"></span> Normal</span>
+                <span><span class="wl-badge wl-moderate" style="display:inline-block"></span> Moderate</span>
+                <span><span class="wl-badge wl-high" style="display:inline-block"></span> High</span>
+              </div>
+            </div>
+            <div id="wlEngineerList" style="max-height:260px;overflow-y:auto"></div>
+          </div>
+        </div>
+
+        <div class="card full-row">
+          <div class="card-header"><div class="card-title">Top contributors this week</div><div class="card-sub">Ranked by tickets resolved</div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Engineer</th><th>Team</th><th>Resolved ↓</th><th>Open</th><th>SLA %</th></tr></thead>
+              <tbody id="contributorsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ TEAMS PAGE ══════ -->
+      <div class="page" id="page-teams">
+
+        <!-- List view -->
+        <div id="teams-list-view">
+          <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
+            <span style="font-size:12px;color:var(--text-muted)">Export:</span>
+            <button class="export-btn csv" onclick="exportCSV('teams')"><i class="ti ti-table-export"></i>CSV</button>
+            <button class="export-btn pdf" onclick="exportPDF('teams')"><i class="ti ti-file-type-pdf"></i>PDF Report</button>
+          </div>
+          <div class="card full-row">
+            <div class="card-header">
+              <div class="card-title">All teams — Project ATLAS</div>
+              <div class="card-sub">7 teams · 38 engineers · Click a team to view members</div>
+            </div>
+            <div class="team-grid" id="teamGrid"></div>
+          </div>
+        </div>
+
+        <!-- Team detail view -->
+        <div id="team-detail-view" style="display:none">
+          <button class="back-btn" onclick="showTeamsList()">
+            <i class="ti ti-arrow-left" style="font-size:14px"></i>All Teams
+          </button>
+          <div class="card" style="margin-bottom:12px">
+            <div class="card-header">
+              <div>
+                <div class="card-title" id="teamDetailName"></div>
+                <div class="card-sub" id="teamDetailMeta"></div>
+              </div>
+              <div style="display:flex;gap:28px;text-align:center">
+                <div><div style="font-size:20px;font-weight:700;color:var(--text-primary)" id="tdOpen"></div><div style="font-size:11px;color:var(--text-muted)">Open</div></div>
+                <div><div style="font-size:20px;font-weight:700;color:var(--success)" id="tdResolved"></div><div style="font-size:11px;color:var(--text-muted)">Resolved</div></div>
+                <div><div style="font-size:20px;font-weight:700" id="tdSLA"></div><div style="font-size:11px;color:var(--text-muted)">SLA %</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Team members</div><div class="card-sub">Click a member to view their tickets</div></div>
+            <div class="member-list" id="memberList"></div>
+          </div>
+        </div>
+
+        <!-- Person detail view -->
+        <div id="person-detail-view" style="display:none">
+          <button class="back-btn" onclick="showPersonFromTeam()">
+            <i class="ti ti-arrow-left" style="font-size:14px"></i><span id="backToTeamName">Back to team</span>
+          </button>
+          <div class="person-header">
+            <div class="person-avatar" id="personAvatar"></div>
+            <div>
+              <div class="person-name" id="personName"></div>
+              <div class="person-meta" id="personMeta"></div>
+            </div>
+            <div class="person-kpis">
+              <div><div class="pkpi-val" id="pstatOpen"></div><div class="pkpi-lbl">Open</div></div>
+              <div><div class="pkpi-val" style="color:var(--success)" id="pstatResolved"></div><div class="pkpi-lbl">Resolved</div></div>
+              <div><div class="pkpi-val" id="pstatSLA"></div><div class="pkpi-lbl">SLA %</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Latest tickets handled</div></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Ticket ID</th><th>Subject</th><th>Priority</th><th>Status</th><th>Updated</th></tr></thead>
+                <tbody id="personTicketsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ ALL TICKETS PAGE ══════ -->
+      <div class="page" id="page-tickets">
+
+        <!-- Filter bar -->
+        <div class="filter-bar" style="margin-bottom:12px">
+          <label>Status</label>
+          <select class="filter-select" onchange="applyFilter('status',this.value)">
+            <option value="">All</option>
+            <option>Open</option><option>In Progress</option>
+            <option>Resolved</option><option>SLA Breach</option>
+          </select>
+
+          <label>Team</label>
+          <select class="filter-select" onchange="applyFilter('team',this.value)">
+            <option value="">All teams</option>
+            <option>Network Ops</option><option>Security</option><option>Hardware</option>
+            <option>Software</option><option>Infra & Servers</option>
+            <option>BI & Analytics</option><option>DB & Middleware</option>
+          </select>
+
+          <label>Priority</label>
+          <select class="filter-select" onchange="applyFilter('priority',this.value)">
+            <option value="">All</option>
+            <option>Critical</option><option>High</option>
+            <option>Medium</option><option>Low</option>
+          </select>
+
+          <label>Category</label>
+          <select class="filter-select" onchange="applyFilter('category',this.value)">
+            <option value="">All</option>
+            <option>Network</option><option>Software</option><option>Hardware</option>
+            <option>Security</option><option>Database</option>
+            <option>BI & Analytics</option><option>Infrastructure</option>
+          </select>
+
+          <div class="filter-sep"></div>
+
+          <label>From</label>
+          <input type="date" class="filter-input" style="width:130px" onchange="applyFilter('dateFrom',this.value)" />
+          <label>To</label>
+          <input type="date" class="filter-input" style="width:130px" onchange="applyFilter('dateTo',this.value)" />
+
+          <button class="clear-filter-btn" onclick="clearFilters()">✕ Clear</button>
+
+          <div class="export-group">
+            <button class="export-btn csv" onclick="exportCSV('tickets')"><i class="ti ti-table-export"></i>Export CSV</button>
+            <button class="export-btn pdf" onclick="exportPDF('tickets')"><i class="ti ti-file-type-pdf"></i>Export PDF</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">All tickets</div>
+            <div class="results-count" id="ticketResultCount"></div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th onclick="sortTable('id')">Ticket ID <span class="sort-icon">↕</span></th>
+                  <th onclick="sortTable('sub')">Subject <span class="sort-icon">↕</span></th>
+                  <th onclick="sortTable('team')">Team <span class="sort-icon">↕</span></th>
+                  <th onclick="sortTable('assignee')">Assignee <span class="sort-icon">↕</span></th>
+                  <th onclick="sortTable('priority')">Priority <span class="sort-icon">↕</span></th>
+                  <th onclick="sortTable('status')">Status <span class="sort-icon">↕</span></th>
+                  <th onclick="sortTable('created')">Created <span class="sort-icon">↕</span></th>
+                </tr>
+              </thead>
+              <tbody id="allTicketsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ CREATE TICKET PAGE ══════ -->
+      <div class="page" id="page-create">
+        <div class="card" style="max-width:720px">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Create new ticket</div>
+              <div class="card-sub">Fill the form — ticket will be auto-assigned to the correct domain team</div>
+            </div>
+          </div>
+          <div class="create-grid">
+            <div class="form-group full">
+              <label class="form-label">Subject *</label>
+              <input type="text" id="ct-subject" placeholder="Brief, clear description of the issue" />
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Description</label>
+              <textarea id="ct-desc" placeholder="Detailed description, error messages, affected users, steps to reproduce…"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <select id="ct-category" onchange="autoAssign()">
+                <option value="">— Select category —</option>
+                <option>Network</option><option>Software</option><option>Hardware</option>
+                <option>Security</option><option>Database</option>
+                <option>BI & Analytics</option><option>Infrastructure</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority *</label>
+              <select id="ct-priority">
+                <option>Medium</option><option>Low</option>
+                <option>High</option><option>Critical</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Ticket type</label>
+              <select id="ct-type">
+                <option>Incident</option><option>Service Request</option>
+                <option>Change Request</option><option>Problem</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Reporter name</label>
+              <input type="text" id="ct-reporter" placeholder="Full name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Reporter email</label>
+              <input type="email" id="ct-email" placeholder="email@company.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact / Extension</label>
+              <input type="text" id="ct-contact" placeholder="Phone or extension" />
+            </div>
+
+            <!-- Auto-assign preview -->
+            <div class="form-group full" id="assignPreview" style="display:none">
+              <div class="assign-preview">
+                <i class="ti ti-users-group" style="font-size:16px"></i>
+                <span id="assignText"></span>
+              </div>
+            </div>
+
+            <div class="form-group full form-actions">
+              <button class="btn-secondary" onclick="clearForm()">Clear form</button>
+              <button class="btn-primary" onclick="submitTicket()">
+                <i class="ti ti-circle-plus" style="font-size:15px"></i>Create & Assign Ticket
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Domain routing legend -->
+        <div class="card" style="max-width:720px;margin-top:14px">
+          <div class="card-header"><div class="card-title">Auto-assignment routing</div><div class="card-sub">How tickets are directed</div></div>
+          <table>
+            <thead><tr><th>Category</th><th>Assigned Team</th><th>Lead</th><th>Members</th></tr></thead>
+            <tbody>
+              <tr><td>Network</td><td>Network Ops</td><td>Ravi Kumar</td><td>6</td></tr>
+              <tr><td>Software</td><td>Software</td><td>Karthik V</td><td>6</td></tr>
+              <tr><td>Hardware</td><td>Hardware</td><td>Deepa Nair</td><td>7</td></tr>
+              <tr><td>Security</td><td>Security</td><td>Priya Singh</td><td>5</td></tr>
+              <tr><td>Database</td><td>DB & Middleware</td><td>Meena Pillai</td><td>5</td></tr>
+              <tr><td>BI & Analytics</td><td>BI & Analytics</td><td>Anand Raj</td><td>4</td></tr>
+              <tr><td>Infrastructure</td><td>Infra & Servers</td><td>Suresh Babu</td><td>5</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+
+  <!-- ════ AI PANEL ════ -->
+  <div class="ai-panel" id="aiPanel">
+    <div class="ai-header">
+      <div class="ai-title">
+        <span class="ai-status-dot"></span>AI Assistant
+      </div>
+      <button class="ai-close" onclick="toggleAI()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="ai-messages" id="aiMessages">
+      <div class="msg ai">Hello! I'm your ServiceDesk AI for Project ATLAS. I have full context on ticket volumes, team SLAs, workloads, and breaches. What would you like to know?</div>
+    </div>
+    <div class="ai-chips">
+      <div class="ai-chip" onclick="askAI('Which team needs the most urgent attention?')">🚨 Urgent attention</div>
+      <div class="ai-chip" onclick="askAI('Which team has the most SLA breaches?')">SLA breaches</div>
+      <div class="ai-chip" onclick="askAI('Who are the top performers this week?')">Top performers</div>
+      <div class="ai-chip" onclick="askAI('Summarize overall project health for leadership')">Project health</div>
+      <div class="ai-chip" onclick="askAI('Which tickets are at highest risk of SLA breach?')">At-risk tickets</div>
+      <div class="ai-chip" onclick="askAI('Recommend how to improve Infra team SLA from 78% to target')">Improve Infra SLA</div>
+    </div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="aiInput" placeholder="Ask about tickets, SLAs, teams, performance…" />
+      <button class="ai-send" onclick="sendAI()"><i class="ti ti-send" style="font-size:16px"></i></button>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<div class="toast" id="toast"></div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
