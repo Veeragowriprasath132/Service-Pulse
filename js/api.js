@@ -5,7 +5,7 @@
 
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? `http://${window.location.hostname}:8000`
-  : '';   // same origin if served by FastAPI
+  : 'https://service-pulse-xzsh.onrender.com';   // same origin if served by FastAPI
 
 class APIClient {
   constructor(base = API_BASE) {
