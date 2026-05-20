@@ -11,6 +11,7 @@ from __future__ import annotations
 import os
 import json
 import logging
+import httpx
 import numpy as np
 from typing import List, Tuple, Optional
 from functools import lru_cache
@@ -269,7 +270,8 @@ Answer using the context and live stats above. If something is unknown, say so c
 
     # Step 4: Call Claude
     try:
-        client = Groq(api_key=settings.groq_api_key)
+        import httpx
+        client = Groq(api_key=settings.groq_api_key, http_client=httpx.Client())
         response = client.chat.completions.create(
             model="llama3-70b-8192",
             max_tokens=1024,
