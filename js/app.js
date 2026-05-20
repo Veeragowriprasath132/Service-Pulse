@@ -52,8 +52,7 @@ function nav(page, el) {
     workload: ['Team Workload', 'Engineer capacity & distribution'],
     teams: ['Teams & Members', 'All teams in Project ATLAS'],
     tickets: ['All Tickets', 'Complete ticket registry'],
-    create: ['Create Ticket', 'Raise & auto-assign new ticket'],
-    connectors: ['Connectors', 'Connect any ticketing system to ServicePulse']
+    create: ['Create Ticket', 'Raise & auto-assign new ticket']
   };
   const [title, sub] = titles[page] || [page, ''];
   document.getElementById('pageTitle').textContent = title;
