@@ -273,7 +273,7 @@ Answer using the context and live stats above. If something is unknown, say so c
         import httpx
         client = Groq(api_key=settings.groq_api_key, http_client=httpx.Client())
         response = client.chat.completions.create(
-            model="llama3-70b-8192",
+            model="llama-3.3-70b-versatile",
             max_tokens=1024,
             messages=[{"role": "system", "content": system_prompt}] + messages
         )
