@@ -47,6 +47,10 @@
     <button class="nav-item" data-page="create" onclick="nav('create',this)">
       <i class="ti ti-circle-plus icon"></i><span>Create Ticket</span>
     </button>
+    <div class="nav-section">Integrations</div>
+    <button class="nav-item" data-page="connectors" onclick="nav('connectors',this);initConnectorsPage()">
+      <i class="ti ti-plug icon"></i><span>Connectors</span>
+    </button>
 
     <div class="sidebar-footer">
       <button class="nav-item" onclick="toggleAI()">
@@ -453,6 +457,115 @@
         </div>
       </div>
 
+      <!-- 
+  ADD THIS PAGE TO ServicePulse frontend/index.html
+  Inside the <div class="content"> section, add this page div.
+  Also add the nav item and the connector JS.
+-->
+
+<!-- CONNECTOR NAV ITEM - Add to sidebar after "Create Ticket" nav item -->
+<!--
+<div class="nav-section">Integrations</div>
+<button class="nav-item" data-page="connectors" onclick="nav('connectors',this)">
+  <i class="ti ti-plug icon"></i><span>Connectors</span>
+</button>
+-->
+
+<!-- CONNECTORS PAGE - Add inside <div class="content"> -->
+<div class="page" id="page-connectors">
+
+  <!-- Add Connector Form -->
+  <div class="card" style="max-width:700px;margin-bottom:16px">
+    <div class="card-header">
+      <div class="card-title">Connect a Ticketing System</div>
+      <div class="card-sub">Connect any REST API-based ticketing system</div>
+    </div>
+    <div class="create-grid">
+      <div class="form-group">
+        <label class="form-label">System Name *</label>
+        <input type="text" id="conn-name" placeholder="e.g. TicketFlow, Jira, Freshservice" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">System Type</label>
+        <select id="conn-type" onchange="autoFillEndpoints()">
+          <option value="ticketflow">TicketFlow</option>
+          <option value="jira">Jira</option>
+          <option value="freshservice">Freshservice</option>
+          <option value="zendesk">Zendesk</option>
+          <option value="servicedesk_plus">ServiceDesk Plus</option>
+          <option value="custom">Custom REST API</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Base URL *</label>
+        <input type="text" id="conn-url" placeholder="https://ticketflow-g671.onrender.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Auth Type</label>
+        <select id="conn-auth" onchange="toggleApiKey()">
+          <option value="none">No Auth</option>
+          <option value="bearer">Bearer Token</option>
+          <option value="apikey">API Key</option>
+          <option value="basic">Basic Auth</option>
+        </select>
+      </div>
+      <div class="form-group" id="apiKeyGroup" style="display:none">
+        <label class="form-label">API Key / Token</label>
+        <input type="password" id="conn-apikey" placeholder="Your API key or token" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tickets Endpoint</label>
+        <input type="text" id="conn-tickets-ep" value="/api/tickets" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Summary Endpoint</label>
+        <input type="text" id="conn-summary-ep" value="/api/summary" />
+      </div>
+      <div class="form-group full form-actions">
+        <button class="btn-secondary" onclick="clearConnectorForm()">Clear</button>
+        <button class="topbar-btn" onclick="testNewConnection()" style="display:flex;align-items:center;gap:6px"><i class="ti ti-plug" style="font-size:15px"></i>Test Connection</button>
+        <button class="btn-primary" onclick="addConnector()"><i class="ti ti-circle-plus" style="font-size:15px"></i>Add Connector</button>
+      </div>
+    </div>
+    <div id="connTestResult" style="margin-top:10px"></div>
+  </div>
+
+  <!-- Connected Systems -->
+  <div class="card" style="max-width:700px">
+    <div class="card-header">
+      <div class="card-title">Connected Systems</div>
+      <button class="topbar-btn" onclick="syncAllConnectors()" style="display:flex;align-items:center;gap:6px;font-size:12px">
+        <i class="ti ti-refresh" style="font-size:14px"></i>Sync All
+      </button>
+    </div>
+    <div id="connectorsList">
+      <div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px">
+        No connectors added yet. Add your first ticketing system above!
+      </div>
+    </div>
+  </div>
+
+  <!-- Synced Tickets -->
+  <div class="card" id="syncedTicketsCard" style="display:none;margin-top:16px">
+    <div class="card-header">
+      <div class="card-title">Live Tickets from Connected Systems</div>
+      <div class="card-sub" id="syncedTicketsSub"></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ticket ID</th><th>Subject</th><th>Team</th>
+            <th>Assignee</th><th>Priority</th><th>Status</th><th>Source</th>
+          </tr>
+        </thead>
+        <tbody id="syncedTicketsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
       <!-- ══════ CREATE TICKET PAGE ══════ -->
       <div class="page" id="page-create">
         <div class="card" style="max-width:720px">
@@ -579,6 +692,7 @@
 <script src="js/api.js"></script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
+<script src="js/connector.js"></script>
 
 </body>
 </html>
