@@ -284,7 +284,7 @@ async function doLogin() {
     localStorage.setItem('sp-user', JSON.stringify(data.user));
 
     // Redirect to dashboard
-    window.location.href = 'index.html';
+    window.location.href = '/Service-Pulse/index.html';
 
   } catch (e) {
     errorText.textContent = e.message || 'Login failed. Please try again.';
@@ -296,7 +296,7 @@ async function doLogin() {
 
 // Check if already logged in
 if (localStorage.getItem('sp-token')) {
-  window.location.href = 'index.html';
+  window.location.href = '/Service-Pulse/index.html';
 }
 </script>
 </body>
