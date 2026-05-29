@@ -182,8 +182,8 @@
         <div class="input-wrap">
           <i class="ti ti-lock"></i>
           <input type="password" class="form-input" id="password" placeholder="Enter your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
-          <button class="password-toggle" onclick="togglePassword()" type="button" id="pwToggle">
-            <i class="ti ti-eye" id="pwIcon"></i>
+          <button onclick="togglePassword()" type="button" id="pwToggle" style="background:none;border:none;cursor:pointer;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#8892a4;display:flex;align-items:center;justify-content:center;width:32px;height:32px;">
+            <i class="ti ti-eye" id="pwIcon" style="font-size:18px"></i>
           </button>
         </div>
       </div>
