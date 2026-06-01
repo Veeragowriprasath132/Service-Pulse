@@ -105,8 +105,11 @@ function setupLogout() {
 // ── Override fetch to add auth headers ────────────────────
 const _originalFetch = window.fetch;
 window.fetch = function(url, options = {}) {
-  // Add auth header for backend calls
-  if (typeof url === 'string' && url.includes(BACKEND_URL)) {
+  // Add auth header ONLY for ServicePulse backend calls
+  if (typeof url === 'string' && 
+      url.includes(BACKEND_URL) && 
+      !url.includes('anthropic.com') && 
+      !url.includes('groq.com')) {
     options.headers = {
       ...options.headers,
       'Authorization': `Bearer ${Auth.token}`

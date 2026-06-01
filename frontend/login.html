@@ -228,7 +228,9 @@
 </div>
 
 <script>
-const BACKEND = 'https://service-pulse-xzsh.onrender.com';
+const BACKEND = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:8000'
+  : 'https://service-pulse-xzsh.onrender.com';
 
 function fillCreds(user, pass) {
   document.getElementById('username').value = user;
@@ -284,7 +286,7 @@ async function doLogin() {
     localStorage.setItem('sp-user', JSON.stringify(data.user));
 
     // Redirect to dashboard
-    window.location.href = '/Service-Pulse/index.html';
+    window.location.href = window.location.hostname === 'localhost' ? '/index.html' : '/Service-Pulse/index.html';
 
   } catch (e) {
     errorText.textContent = e.message || 'Login failed. Please try again.';
@@ -296,7 +298,7 @@ async function doLogin() {
 
 // Check if already logged in
 if (localStorage.getItem('sp-token')) {
-  window.location.href = '/Service-Pulse/index.html';
+  window.location.href = window.location.hostname === 'localhost' ? '/index.html' : '/Service-Pulse/index.html';
 }
 </script>
 </body>
