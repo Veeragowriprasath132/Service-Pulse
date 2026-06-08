@@ -145,4 +145,4 @@ window.fetch = function(url, options = {}) {
     }
     return res;
   });
-};
+

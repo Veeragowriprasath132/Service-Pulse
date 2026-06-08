@@ -3,9 +3,9 @@
  * All calls to the FastAPI backend go through this module.
  */
 
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? `http://${window.location.hostname}:8000`
-  : '';   // same origin if served by FastAPI
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:8000'
+  : 'https://service-pulse-xzsh.onrender.com';
 
 class APIClient {
   constructor(base = API_BASE) {
