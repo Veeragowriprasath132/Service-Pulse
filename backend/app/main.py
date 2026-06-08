@@ -14,6 +14,8 @@ from app.db.database import engine, Base
 from app.api.routes import dashboard_router, ticket_router, team_router, ai_router
 from app.api.connector import connector_router
 from app.api.auth import auth_router
+from app.api.ai_enhanced import ai_enhanced_router
+app.include_router(ai_enhanced_router)
 
 
 settings = get_settings()
