@@ -138,11 +138,10 @@ window.fetch = function(url, options = {}) {
       'Authorization': `Bearer ${Auth.token}`
     };
   }
-  return _originalFetch(url, options).then(res => {
+return _originalFetch(url, options).then(res => {
     // Auto-logout on 401
     if (res.status === 401 && url.includes(BACKEND_URL)) {
       Auth.logout();
     }
     return res;
   });
-
