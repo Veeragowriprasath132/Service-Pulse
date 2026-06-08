@@ -24,9 +24,7 @@
         </div>
       </div>
     </div>
-    <button class="nav-item" data-page="ai-hub" onclick="nav('ai-hub',this);renderAIHub()">
-       <i class="ti ti-brain icon"></i><span>AI Hub</span>
-    </button>
+
     <div class="nav-section">Overview</div>
     <button class="nav-item active" data-page="dashboard" onclick="nav('dashboard',this)">
       <i class="ti ti-home-2 icon"></i><span>Dashboard</span>
@@ -52,6 +50,9 @@
     <div class="nav-section">Integrations</div>
     <button class="nav-item" data-page="connectors" onclick="nav('connectors',this);initConnectorsPage()">
       <i class="ti ti-plug icon"></i><span>Connectors</span>
+    </button>
+    <button class="nav-item" data-page="ai-hub" onclick="nav('ai-hub',this);renderAIHub()">
+      <i class="ti ti-brain icon"></i><span>AI Hub</span>
     </button>
 
     <div class="sidebar-footer">
@@ -87,7 +88,7 @@
 
       <!-- ══════ DASHBOARD PAGE ══════ -->
       <div class="page active" id="page-dashboard">
-
+      <div class="page" id="page-ai-hub"></div>
         <!-- Filter bar -->
         <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
           <span style="font-size:12px;color:var(--text-muted)">Export:</span>
