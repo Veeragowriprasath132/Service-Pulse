@@ -105,6 +105,29 @@ function setupLogout() {
 // ── Override fetch to add auth headers ────────────────────
 const _originalFetch = window.fetch;
 window.fetch = function(url, options = {}) {
+  const urlStr = typeof url === 'string' ? url : url.toString();
+  
+  // Only add auth headers for ServicePulse backend
+  // Never intercept Groq, Anthropic, or external APIs
+  if (urlStr.includes(BACKEND_URL) && 
+      !urlStr.includes('groq.com') && 
+      !urlStr.includes('anthropic.com') &&
+      !urlStr.includes('api.anthropic') &&
+      urlStr.includes('/api/')) {
+    options = { ...options };
+    options.headers = {
+      ...options.headers,
+      'Authorization': `Bearer ${Auth.token}`
+    };
+  }
+  
+  return _originalFetch(url, options).then(res => {
+    if (res.status === 401 && urlStr.includes(BACKEND_URL)) {
+      Auth.logout();
+    }
+    return res;
+  });
+};
   // Add auth header ONLY for ServicePulse backend calls
   if (typeof url === 'string' && 
       url.includes(BACKEND_URL) && 
