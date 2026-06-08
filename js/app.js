@@ -46,14 +46,16 @@ function nav(page, el) {
   document.getElementById('page-' + page)?.classList.add('active');
   State.currentPage = page;
 
-  const titles = {
+const titles = {
     dashboard: ['Executive Dashboard', 'Real-time overview · Project ATLAS'],
     sla: ['SLA Monitor', 'Service Level Agreement tracking'],
     workload: ['Team Workload', 'Engineer capacity & distribution'],
     teams: ['Teams & Members', 'All teams in Project ATLAS'],
     tickets: ['All Tickets', 'Complete ticket registry'],
-    create: ['Create Ticket', 'Raise & auto-assign new ticket']
-  };
+    create: ['Create Ticket', 'Raise & auto-assign new ticket'],
+    connectors: ['Connectors', 'Connect any ticketing system to ServicePulse'],
+    'ai-hub': ['AI Hub', 'Daily briefing, anomaly detection & performance coaching']
+};
   const [title, sub] = titles[page] || [page, ''];
   document.getElementById('pageTitle').textContent = title;
   document.getElementById('pageSub').textContent = sub;
