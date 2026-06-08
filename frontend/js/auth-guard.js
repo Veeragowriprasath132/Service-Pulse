@@ -14,7 +14,7 @@ const BACKEND_URL = 'https://service-pulse-xzsh.onrender.com';
 // ── Role Permission Map ───────────────────────────────────
 const ROLE_PERMISSIONS = {
   superadmin: {
-    pages:      ['dashboard','sla','workload','teams','tickets','create','connectors','ai'],
+    pages:      ['dashboard','sla','workload','teams','tickets','ai-hub','create','connectors','ai'],
     canCreate:  true,
     canExport:  true,
     canConnect: true,
@@ -23,7 +23,7 @@ const ROLE_PERMISSIONS = {
     color:      '#0C447C'
   },
   manager: {
-    pages:      ['dashboard','sla','workload','teams','tickets','create','connectors','ai'],
+    pages:      ['dashboard','sla','workload','teams','tickets','ai-hub','create','connectors','ai'],
     canCreate:  true,
     canExport:  true,
     canConnect: true,
@@ -32,7 +32,7 @@ const ROLE_PERMISSIONS = {
     color:      '#185FA5'
   },
   teamlead: {
-    pages:      ['dashboard','sla','workload','teams','tickets','create','ai'],
+    pages:      ['dashboard','sla','workload','teams','tickets','ai-hub','create','ai'],
     canCreate:  true,
     canExport:  false,
     canConnect: false,
@@ -41,7 +41,7 @@ const ROLE_PERMISSIONS = {
     color:      '#BA7517'
   },
   viewer: {
-    pages:      ['dashboard','sla','workload','teams','tickets'],
+    pages:      ['dashboard','sla','workload','teams','tickets','ai-hub'],
     canCreate:  false,
     canExport:  false,
     canConnect: false,
