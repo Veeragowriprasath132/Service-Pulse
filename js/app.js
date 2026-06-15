@@ -64,6 +64,7 @@ const titles = {
   if (page === 'dashboard' && !State.chartsInited.dashboard) { initDashboardCharts(); State.chartsInited.dashboard = true; }
   if (page === 'sla' && !State.chartsInited.sla) { initSLACharts(); State.chartsInited.sla = true; }
   if (page === 'workload' && !State.chartsInited.workload) { initWorkloadCharts(); State.chartsInited.workload = true; }
+  if (page === 'ai-hub') { setTimeout(function(){ if(typeof renderAIHub==='function') renderAIHub(); }, 100); }
 }
 
 // ── Theme ──────────────────────────────────────────────────
