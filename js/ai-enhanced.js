@@ -382,7 +382,6 @@ function refreshAllAI() {
   loadDailyBriefing();
   loadAnomalyDetector();
   loadPerformanceCoach();
-  showToast('🤖 Refreshing all AI features...', 'info');
 }
 
 
