@@ -754,3 +754,15 @@ function showToast(msg, type = 'success') {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3500);
 }
+function showAIHub() {
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelector('[data-page="ai-hub"]').classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+  const hub = document.getElementById('page-ai-hub');
+  hub.style.display = 'block';
+  hub.style.padding = '20px';
+  State.currentPage = 'ai-hub';
+  document.getElementById('pageTitle').textContent = 'AI Hub';
+  document.getElementById('pageSub').textContent = 'Daily briefing, anomaly detection & performance coaching';
+  if (typeof renderAIHub === 'function') renderAIHub();
+}
