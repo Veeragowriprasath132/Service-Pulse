@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Hub — ServicePulse</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #F4F5F7; color: #1a1d23; }
+
+    .header {
+      background: linear-gradient(135deg, #0C447C, #185FA5);
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; }
+    .header-title { font-size: 18px; font-weight: 700; color: #fff; }
+    .header-sub { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 1px; }
+    .back-btn { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.1); border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer; text-decoration: none; }
+    .back-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+    .card { background: #fff; border: 1px solid #DFE1E6; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .card-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #DFE1E6; }
+    .card-title { font-size: 14px; font-weight: 600; color: #1a1d23; display: flex; align-items: center; gap: 8px; }
+    .card-body { padding: 16px 18px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; transition: all 0.15s; }
+    .btn-primary { background: #185FA5; color: #fff; }
+    .btn-primary:hover { background: #0C447C; }
+    .btn-secondary { background: #F4F5F7; color: #5a6070; border: 1px solid #DFE1E6; }
+    .btn-secondary:hover { background: #EBECF0; color: #1a1d23; }
+    .btn-white { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+    .btn-white:hover { background: rgba(255,255,255,0.25); }
+
+    .loading { display: flex; align-items: center; gap: 10px; padding: 16px; color: #8892a4; font-size: 13px; }
+    .spinner { width: 18px; height: 18px; border: 2px solid #DFE1E6; border-top-color: #185FA5; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .briefing-content { font-size: 13px; line-height: 1.8; color: #1a1d23; }
+    .briefing-content strong { font-weight: 600; }
+    .briefing-content .section { margin-bottom: 12px; padding: 10px 14px; background: #F4F5F7; border-radius: 8px; border-left: 3px solid #185FA5; }
+
+    .anomaly-card { border-radius: 10px; padding: 14px; }
+    .anomaly-normal { background: #EAF3DE; border: 1px solid #B5D9C8; }
+    .anomaly-warning { background: #FAEEDA; border: 1px solid #F5D87A; }
+    .anomaly-critical { background: #FCEBEB; border: 1px solid #F5B7B7; }
+    .anomaly-item { font-size: 12px; padding: 5px 8px; background: rgba(163,45,45,0.08); border-radius: 4px; margin-bottom: 4px; color: #A32D2D; }
+
+    .coach-stat { text-align: center; padding: 12px; border-radius: 8px; }
+    .coach-stat-value { font-size: 22px; font-weight: 700; }
+    .coach-stat-label { font-size: 11px; color: #8892a4; margin-top: 2px; }
+
+    .chat-messages { min-height: 160px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .msg-user { background: #185FA5; color: #fff; border-radius: 12px 12px 2px 12px; padding: 10px 14px; font-size: 13px; max-width: 85%; align-self: flex-end; margin-left: auto; }
+    .msg-ai { background: #F4F5F7; color: #1a1d23; border-radius: 12px 12px 12px 2px; padding: 10px 14px; font-size: 13px; max-width: 85%; line-height: 1.6; border: 1px solid #DFE1E6; }
+    .msg-typing { background: #F4F5F7; border-radius: 12px; padding: 12px 16px; display: flex; gap: 4px; align-self: flex-start; border: 1px solid #DFE1E6; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: #8892a4; animation: bounce 1.2s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+    .chat-input-row { display: flex; gap: 8px; }
+    .chat-input { flex: 1; border: 1.5px solid #DFE1E6; border-radius: 8px; padding: 9px 12px; font-size: 13px; font-family: inherit; color: #1a1d23; }
+    .chat-input:focus { outline: none; border-color: #185FA5; }
+
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .chip { font-size: 11px; padding: 5px 10px; border: 1px solid #DFE1E6; border-radius: 20px; cursor: pointer; color: #5a6070; background: #fff; transition: all 0.15s; }
+    .chip:hover { background: #E6F1FB; color: #185FA5; border-color: #185FA5; }
+
+    .alert-box { padding: 10px 14px; border-radius: 8px; font-size: 12px; margin-top: 10px; }
+    .alert-danger { background: rgba(163,45,45,0.08); color: #A32D2D; }
+
+    .gradient-header { background: linear-gradient(135deg, #0C447C, #185FA5); border-radius: 12px 12px 0 0; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
+
+    @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-icon"><i class="ti ti-brain"></i></div>
+    <div>
+      <div class="header-title">🤖 AI Intelligence Hub</div>
+      <div class="header-sub">Powered by Groq LLaMA3 + RAG Pipeline · Project ATLAS</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="btn btn-white" onclick="refreshAll()"><i class="ti ti-refresh"></i> Refresh All</button>
+    <a href="index.html" class="back-btn"><i class="ti ti-arrow-left"></i> Back to Dashboard</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- DAILY BRIEFING -->
+  <div class="card">
+    <div class="gradient-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <i class="ti ti-sun" style="font-size:18px;color:#fff"></i>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:#fff">AI Daily Briefing</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.65)">Auto-generated executive summary for leadership</div>
+        </div>
+      </div>
+      <button class="btn btn-white" onclick="loadBriefing()"><i class="ti ti-refresh"></i> Regenerate</button>
+    </div>
+    <div class="card-body" id="briefingContent">
+      <div style="text-align:center;padding:20px;color:#8892a4;font-size:13px">
+        <i class="ti ti-sun" style="font-size:32px;display:block;margin-bottom:8px;color:#185FA5"></i>
+        Click <strong>Regenerate</strong> to get today's AI briefing
+      </div>
+    </div>
+  </div>
+
+  <!-- ANOMALY + PERFORMANCE -->
+  <div class="grid-2">
+
+    <!-- ANOMALY DETECTOR -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="ti ti-radar" style="color:#A32D2D"></i>
+          Anomaly Detector
+        </div>
+        <button class="btn btn-secondary" onclick="loadAnomalies()"><i class="ti ti-refresh"></i> Scan Now</button>
+      </div>
+      <div class="card-body" id="anomalyContent">
+        <div style="text-align:center;padding:20px;color:#8892a4;font-size:13px">
+          <i class="ti ti-radar" style="font-size:32px;display:block;margin-bottom:8px;color:#A32D2D"></i>
+          Click <strong>Scan Now</strong> to detect anomalies
+        </div>
+      </div>
+    </div>
+
+    <!-- PERFORMANCE COACH -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="ti ti-chart-line" style="color:#0F6E56"></i>
+          Performance Coach
+        </div>
+        <button class="btn btn-secondary" onclick="loadCoach()"><i class="ti ti-refresh"></i> Analyze</button>
+      </div>
+      <div class="card-body" id="coachContent">
+        <div style="text-align:center;padding:20px;color:#8892a4;font-size:13px">
+          <i class="ti ti-chart-line" style="font-size:32px;display:block;margin-bottom:8px;color:#0F6E56"></i>
+          Click <strong>Analyze</strong> to get coaching insights
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AI CHAT -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        <i class="ti ti-message-chatbot" style="color:#185FA5"></i>
+        AI Assistant Chat
+      </div>
+      <div style="font-size:12px;color:#8892a4">Ask anything about Project ATLAS</div>
+    </div>
+    <div class="card-body">
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg-ai">
+          Hello! I'm your ServiceDesk AI for Project ATLAS. I have full context on ticket volumes, team SLAs, workloads, and breaches. What would you like to know?
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" placeholder="Ask about SLAs, teams, tickets, performance..." onkeydown="if(event.key==='Enter')sendChat()" />
+        <button class="btn btn-primary" onclick="sendChat()"><i class="ti ti-send"></i> Send</button>
+      </div>
+      <div class="chips">
+        <span class="chip" onclick="askQuestion('Which team needs the most urgent attention?')">🚨 Urgent attention</span>
+        <span class="chip" onclick="askQuestion('Summarize overall project health')">📊 Project health</span>
+        <span class="chip" onclick="askQuestion('Which team has the most SLA breaches?')">⚠️ SLA breaches</span>
+        <span class="chip" onclick="askQuestion('Who are the top performers this week?')">🏆 Top performers</span>
+        <span class="chip" onclick="askQuestion('What action items should I focus on today?')">📋 Action items</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const BACKEND = 'https://service-pulse-xzsh.onrender.com';
+const TOKEN   = localStorage.getItem('sp-token');
+
+async function apiFetch(path, options = {}) {
+  const res = await fetch(`${BACKEND}${path}`, {
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${TOKEN}`, ...options.headers },
+    ...options
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+function formatText(text) {
+  if (!text) return '';
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^#{1,3}\s(.+)$/gm, '<div style="font-weight:700;font-size:14px;margin:12px 0 6px;color:#185FA5">$1</div>')
+    .replace(/^[-•]\s(.+)$/gm, '<div style="padding-left:16px;margin-bottom:3px">• $1</div>')
+    .replace(/^\d+\.\s(.+)$/gm, '<div style="padding-left:16px;margin-bottom:4px">$&</div>')
+    .replace(/\n\n/g, '<br/><br/>')
+    .replace(/\n/g, '<br/>');
+}
+
+// ── 1. DAILY BRIEFING ─────────────────────────────────────
+async function loadBriefing() {
+  const el = document.getElementById('briefingContent');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>AI is generating your daily briefing...</div>';
+  try {
+    const data = await apiFetch('/api/ai/daily-briefing');
+    const breach = data.alerts?.sla_breach_count || 0;
+    const bg     = breach > 10 ? '#FCEBEB' : breach > 5 ? '#FAEEDA' : '#EAF3DE';
+    const border = breach > 10 ? '#F5B7B7' : breach > 5 ? '#F5D87A' : '#B5D9C8';
+    const icon   = breach > 10 ? '🔴' : breach > 5 ? '🟡' : '🟢';
+
+    el.innerHTML = `
+      <div style="background:${bg};border:1px solid ${border};border-radius:10px;padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div style="font-size:14px;font-weight:600">${icon} ${data.date}</div>
+          <div style="font-size:11px;color:#8892a4">Generated ${new Date().toLocaleTimeString()}</div>
+        </div>
+        <div class="briefing-content">${formatText(data.briefing)}</div>
+        ${data.alerts?.teams_at_risk?.length ? `
+          <div class="alert-box alert-danger" style="margin-top:12px">
+            ⚠️ Teams needing attention: <strong>${data.alerts.teams_at_risk.join(', ')}</strong>
+          </div>` : ''}
+      </div>`;
+  } catch(e) {
+    el.innerHTML = `<div style="color:#A32D2D;padding:12px;font-size:13px">Failed: ${e.message}</div>`;
+  }
+}
+
+// ── 2. ANOMALY DETECTOR ───────────────────────────────────
+async function loadAnomalies() {
+  const el = document.getElementById('anomalyContent');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Scanning for anomalies...</div>';
+  try {
+    const data = await apiFetch('/api/ai/anomalies');
+    const cls  = { critical: 'anomaly-critical', warning: 'anomaly-warning', normal: 'anomaly-normal' };
+    const icon = { critical: '🔴', warning: '🟡', normal: '🟢' };
+
+    el.innerHTML = `
+      <div class="anomaly-card ${cls[data.severity] || cls.normal}">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:14px;font-weight:600">${icon[data.severity]} ${data.severity?.toUpperCase()} — ${data.anomaly_count} signals</div>
+        </div>
+        ${data.anomalies_found?.map(a => `<div class="anomaly-item">⚠️ ${a}</div>`).join('') || ''}
+        <div style="font-size:13px;line-height:1.7;margin-top:8px">${formatText(data.report)}</div>
+      </div>`;
+  } catch(e) {
+    el.innerHTML = `<div style="color:#A32D2D;padding:12px;font-size:13px">Failed: ${e.message}</div>`;
+  }
+}
+
+// ── 3. PERFORMANCE COACH ──────────────────────────────────
+async function loadCoach() {
+  const el = document.getElementById('coachContent');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Analyzing team performance...</div>';
+  try {
+    const data = await apiFetch('/api/ai/performance-coach');
+    el.innerHTML = `
+      <div style="display:flex;gap:10px;margin-bottom:14px">
+        <div class="coach-stat" style="background:#E6F1FB;flex:1">
+          <div class="coach-stat-value" style="color:#185FA5">${data.summary?.total_teams || 7}</div>
+          <div class="coach-stat-label">Teams</div>
+        </div>
+        <div class="coach-stat" style="background:#FCEBEB;flex:1">
+          <div class="coach-stat-value" style="color:#A32D2D">${data.summary?.teams_at_risk || 0}</div>
+          <div class="coach-stat-label">At Risk</div>
+        </div>
+        <div class="coach-stat" style="background:#FAEEDA;flex:1">
+          <div class="coach-stat-value" style="color:#BA7517">${data.summary?.avg_load_overall || 0}</div>
+          <div class="coach-stat-label">Avg Load</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.8">${formatText(data.coaching_report)}</div>`;
+  } catch(e) {
+    el.innerHTML = `<div style="color:#A32D2D;padding:12px;font-size:13px">Failed: ${e.message}</div>`;
+  }
+}
+
+// ── 4. AI CHAT ────────────────────────────────────────────
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msgs  = document.getElementById('chatMessages');
+  const q = input.value.trim();
+  if (!q) return;
+
+  msgs.innerHTML += `<div class="msg-user">${q}</div>`;
+  input.value = '';
+
+  const typing = document.createElement('div');
+  typing.className = 'msg-typing'; typing.id = 'typing';
+  typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const data = await apiFetch('/api/ai/chat', {
+      method: 'POST',
+      body: JSON.stringify({ message: q, history: [] })
+    });
+    document.getElementById('typing')?.remove();
+    msgs.innerHTML += `<div class="msg-ai">${formatText(data.reply)}</div>`;
+  } catch(e) {
+    document.getElementById('typing')?.remove();
+    msgs.innerHTML += `<div class="msg-ai" style="color:#A32D2D">Error: ${e.message}</div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function askQuestion(q) {
+  document.getElementById('chatInput').value = q;
+  sendChat();
+}
+
+function refreshAll() {
+  loadBriefing();
+  loadAnomalies();
+  loadCoach();
+}
+
+// Auto-load on page open
+loadBriefing();
+loadAnomalies();
+</script>
+</body>
+</html>
