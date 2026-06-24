@@ -90,6 +90,9 @@
       <div class="page active" id="page-dashboard">
         <!-- Filter bar -->
         <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
+          <button class="topbar-btn" onclick="openImportModal()" style="display:flex;align-items:center;gap:5px;margin-right:8px">
+            <i class="ti ti-file-import" style="font-size:15px"></i> Import
+          </button>
           <span style="font-size:12px;color:var(--text-muted)">Export:</span>
           <button class="export-btn csv" onclick="exportCSV('tickets')"><i class="ti ti-table-export"></i>CSV</button>
           <button class="export-btn pdf" onclick="exportPDF('dashboard')"><i class="ti ti-file-type-pdf"></i>PDF Report</button>
@@ -697,5 +700,6 @@
 <script src="js/app.js"></script>
 <script src="js/connector.js"></script>
 <script src="js/ai-enhanced.js"></script>
+<script src="js/import.js"></script>
 </body>
 </html>

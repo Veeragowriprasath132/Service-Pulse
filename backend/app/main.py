@@ -13,6 +13,7 @@ from app.config import get_settings
 from app.db.database import engine, Base
 from app.api.routes import dashboard_router, ticket_router, team_router, ai_router
 from app.api.connector import connector_router
+from app.api.import_tickets import import_router
 from app.api.ai_enhanced import ai_enhanced_router
 from app.api.auth import auth_router
 
@@ -79,6 +80,7 @@ app.include_router(ticket_router)
 app.include_router(team_router)
 app.include_router(ai_router)
 app.include_router(connector_router)
+app.include_router(import_router)
 app.include_router(ai_enhanced_router)
 # ── Serve frontend static files ───────────────────────────
 import os
