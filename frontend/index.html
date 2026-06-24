@@ -90,10 +90,10 @@
       <div class="page active" id="page-dashboard">
         <!-- Filter bar -->
         <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
-          <button class="topbar-btn" onclick="openImportModal()" style="display:flex;align-items:center;gap:5px;margin-right:8px">
+          
             <i class="ti ti-file-import" style="font-size:15px"></i> Import
           </button>
-          <span style="font-size:12px;color:var(--text-muted)">Export:</span>
+          <button class="topbar-btn" onclick="openImportModal()"><i class="ti ti-file-import"></i> Import</button><span style="font-size:12px;color:var(--text-muted)">Export:</span>
           <button class="export-btn csv" onclick="exportCSV('tickets')"><i class="ti ti-table-export"></i>CSV</button>
           <button class="export-btn pdf" onclick="exportPDF('dashboard')"><i class="ti ti-file-type-pdf"></i>PDF Report</button>
         </div>
@@ -195,7 +195,7 @@
       <!-- ══════ SLA PAGE ══════ -->
       <div class="page" id="page-sla">
         <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
-          <button class="topbar-btn" onclick="openImportModal()" style="display:flex;align-items:center;gap:5px;margin-right:8px"><i class="ti ti-file-import" style="font-size:15px"></i> Import</button><button class="topbar-btn" onclick="openImportModal()" style="display:flex;align-items:center;gap:5px;margin-right:8px"><i class="ti ti-file-import" style="font-size:15px"></i> Import</button><span style="font-size:12px;color:var(--text-muted)">Export:</span>
+          <span style="font-size:12px;color:var(--text-muted)">Export:</span>
           <button class="export-btn csv" onclick="exportCSV('sla')"><i class="ti ti-table-export"></i>CSV</button>
           <button class="export-btn pdf" onclick="exportPDF('sla')"><i class="ti ti-file-type-pdf"></i>PDF Report</button>
         </div>
@@ -257,7 +257,7 @@
       <!-- ══════ WORKLOAD PAGE ══════ -->
       <div class="page" id="page-workload">
         <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
-          <button class="topbar-btn" onclick="openImportModal()" style="display:flex;align-items:center;gap:5px;margin-right:8px"><i class="ti ti-file-import" style="font-size:15px"></i> Import</button><span style="font-size:12px;color:var(--text-muted)">Export:</span>
+          <span style="font-size:12px;color:var(--text-muted)">Export:</span>
           <button class="export-btn csv" onclick="exportCSV('workload')"><i class="ti ti-table-export"></i>CSV</button>
           <button class="export-btn pdf" onclick="exportPDF('workload')"><i class="ti ti-file-type-pdf"></i>PDF Report</button>
         </div>
@@ -322,7 +322,7 @@
         <!-- List view -->
         <div id="teams-list-view">
           <div class="filter-bar" style="border-top:none;padding-left:0;padding-right:0;margin-bottom:16px;background:transparent">
-            <button class="topbar-btn" onclick="openImportModal()" style="display:flex;align-items:center;gap:5px;margin-right:8px"><i class="ti ti-file-import" style="font-size:15px"></i> Import</button><span style="font-size:12px;color:var(--text-muted)">Export:</span>
+            <span style="font-size:12px;color:var(--text-muted)">Export:</span>
             <button class="export-btn csv" onclick="exportCSV('teams')"><i class="ti ti-table-export"></i>CSV</button>
             <button class="export-btn pdf" onclick="exportPDF('teams')"><i class="ti ti-file-type-pdf"></i>PDF Report</button>
           </div>
@@ -703,3 +703,5 @@
 <script src="js/import.js"></script>
 </body>
 </html>
+
+
